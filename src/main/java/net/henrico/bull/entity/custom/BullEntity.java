@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Attr;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -24,9 +25,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.management.Attribute;
+
 public class BullEntity extends Animal implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
-
     public BullEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
@@ -37,16 +39,18 @@ public class BullEntity extends Animal implements IAnimatable {
                 .add(Attributes.ATTACK_DAMAGE, 3.0f)
                 .add(Attributes.ATTACK_SPEED, 2.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.3f).build();
+
     }
 
-    protected void registerGoals() {
+    protected void registerGoals(){
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new PanicGoal(this, 1.25D));
-        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 1.250));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.goalSelector.addGoal(5 ,new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
     }
+
 
     @Nullable
     @Override
@@ -54,20 +58,19 @@ public class BullEntity extends Animal implements IAnimatable {
         return null;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.walk", true));
+    private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event){
+        if(event.isMoving()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.raccoon.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("", true));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
+        data.addAnimationController(new AnimationController(this, "Controller", 0, this::predicate));
     }
 
     @Override
@@ -75,24 +78,20 @@ public class BullEntity extends Animal implements IAnimatable {
         return this.factory;
     }
 
-    protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.COW_STEP, 0.15F, 1.0F);
+    protected void playStepsound(BlockPos pos, BlockState BlockIn) {
+        this.playSound(SoundEvents.COW_STEP, 0.15f, 0.1f);
     }
 
     protected SoundEvent getAmbientSound() {
         return SoundEvents.COW_AMBIENT;
     }
-
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.COW_HURT;
     }
-
     protected SoundEvent getDeathSound() {
         return SoundEvents.COW_DEATH;
     }
-
     protected float getSoundVolume() {
-        return 0.2F;
+        return 0.2f;
     }
-
 }

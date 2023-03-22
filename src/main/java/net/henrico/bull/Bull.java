@@ -12,7 +12,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
-
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Bull.MOD_ID)
 public class Bull
@@ -21,6 +20,8 @@ public class Bull
     private static final Logger LOGGER =LogUtils.getLogger();
     public Bull() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModEntityTypes.register(modEventBus);
 
         ModEntityTypes.register(modEventBus);
 
