@@ -29,8 +29,8 @@ import javax.management.Attribute;
 
 public class BullEntity extends Animal implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
-    public BullEntity(EntityType<? extends Animal> entityType, Level level) {
-        super(entityType, level);
+    public BullEntity(EntityType<? extends Animal> pEntityType, Level plevel) {
+        super(pEntityType, plevel);
     }
 
     public static AttributeSupplier setAttributes() {
@@ -51,20 +51,13 @@ public class BullEntity extends Animal implements IAnimatable {
         this.goalSelector.addGoal(6, (new HurtByTargetGoal(this)).setAlertOthers());
     }
 
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return null;
-    }
-
-    private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event){
+    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event){
         if(event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.walk", true));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.idle", true));
         return PlayState.CONTINUE;
     }
 
@@ -75,7 +68,7 @@ public class BullEntity extends Animal implements IAnimatable {
 
     @Override
     public AnimationFactory getFactory() {
-        return this.factory;
+        return factory;
     }
 
     protected void playStepsound(BlockPos pos, BlockState BlockIn) {
@@ -93,5 +86,11 @@ public class BullEntity extends Animal implements IAnimatable {
     }
     protected float getSoundVolume() {
         return 0.2f;
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+        return null;
     }
 }

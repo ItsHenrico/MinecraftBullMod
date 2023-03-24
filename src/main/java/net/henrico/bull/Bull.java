@@ -2,6 +2,8 @@ package net.henrico.bull;
 
 import com.mojang.logging.LogUtils;
 import net.henrico.bull.entity.ModEntityTypes;
+import net.henrico.bull.entity.client.BullRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,6 +32,8 @@ public class Bull
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        EntityRenderers.register(ModEntityTypes.BULL.get(), BullRenderer::new);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
