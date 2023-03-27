@@ -20,15 +20,17 @@ import org.w3c.dom.Attr;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.management.Attribute;
 
 public class BullEntity extends Animal implements IAnimatable {
-    private AnimationFactory factory = new AnimationFactory(this);
+    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public BullEntity(EntityType<? extends Animal> pEntityType, Level plevel) {
         super(pEntityType, plevel);
     }
@@ -53,22 +55,22 @@ public class BullEntity extends Animal implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event){
         if(event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.walk", ILoopType.EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bull.idle", ILoopType.EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "Controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController<BullEntity>(this, "Controller", 0, this::predicate));
     }
 
     @Override
     public AnimationFactory getFactory() {
-        return factory;
+        return this.factory;
     }
 
     protected void playStepsound(BlockPos pos, BlockState BlockIn) {
