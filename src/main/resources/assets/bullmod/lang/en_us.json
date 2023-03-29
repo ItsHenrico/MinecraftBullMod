@@ -1,3 +1,4 @@
 {
-  "item.bull.bull_spawn_egg": "Bull Spawn Egg"
+  "item.bull.bull_spawn_egg": "Bull Spawn Egg",
+  "entity.bull.BullEntity": "Bull"
 }

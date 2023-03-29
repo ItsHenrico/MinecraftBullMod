@@ -25,8 +25,6 @@ public class Bull
 
         ModEntityTypes.register(modEventBus);
 
-        ModEntityTypes.register(modEventBus);
-
         GeckoLib.initialize();
 
         modEventBus.addListener(this::commonSetup);
